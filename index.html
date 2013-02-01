@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>canvas</title>
+<style>
+* {margin: 0; padding: 0;}
+canvas {display: block;}
+</style>
+</head>
+<body>
+<canvas id="canvas" ></canvas>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script>
+$(function(){
+  var canvas = document.getElementById("canvas");
+  var ctx = canvas.getContext("2d");
+
+ canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  var W = canvas.width;
+  var H = canvas.height;
+
+  var particles = [];
+  for (var i = 0; i < 250; i++) {
+    particles.push(new Particle(false));
+  }
+
+  function Particle(shooting) {
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.vx = Math.random()*70-10;
+    this.vy = Math.random()*70-10;
+    this.size = Math.random()*2;
+    this.blue = Math.floor(Math.random()*8);
+    this.yellow = Math.floor(Math.random()*6);
+    this.vx = Math.random()*120-110;
+    this.vy = Math.random()*130-120;
+    this.shooting = shooting;
+    this.opacity = Math.random()*1;
+  }
+
+  function shoot() {
+    var go = Math.floor(Math.random()*3);
+    var count = Math.floor(Math.random()*2);
+    if (go === 1) {
+      for (var c = 0; c < count; c++) {
+        particles.push(new Particle(true));
+      }
+    }
+  }
+
+  var x = 100; var y = 100;
+
+  function draw() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, W, H);
+    
+    for (var t = 0; t < particles.length; t++) {
+      var p = particles[t];
+      ctx.beginPath();
+      console.log(p.animated);
+      if (p.blue === 1) {
+        ctx.fillStyle = "#5bdeff";
+      } else if (p.yellow === 1) {
+        ctx.fillStyle = "#fffea9";
+      } else if (p.shooting === true) {
+        ctx.fillStyle = "white";
+      } else {
+        ctx.fillStyle = "rgba(255,255,255," + p.opacity + ")";
+      }
+      ctx.arc(p.x, p.y, p.size, Math.PI*2, false);
+      ctx.fill();
+
+      if (p.shooting === true) {
+        p.x += p.vx;
+        p.y += 10;
+      }
+    }
+  }
+
+  setInterval(draw, 20);
+  setInterval(shoot, 300);
+})
+</script>
+</body>
+</html>
