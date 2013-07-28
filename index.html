@@ -15,35 +15,59 @@ svg {
 <script src="raphael-min.js"></script>
 <script>
 
-  var w = 1440;
-  var h = 400;
+  var w = document.documentElement.clientWidth;
+  var h = document.documentElement.clientHeight;
 
   var canvas = new Raphael(0,0,w, h);
 
   function Star(animate, x, y) {
-    this.posX = x || Math.floor(Math.random() * w);
-    this.posY = y || Math.floor(Math.random() * h);
-    this.fill = "hsla(" + Math.floor(Math.random() * 360) + ", 10%, 75%, 1)";
-    this.radius = Math.random() * 2;
-    this.circle = canvas.circle(this.posX, this.posY, this.radius);
-    this.circle.attr("fill", this.fill);
-    this.animate = animate; 
-    if (this.animate === true) {
-      var finalX = Math.floor(Math.random() * w);
-      var anim = Raphael.animation({cx: finalX, cy: h}, 2e3, function(){
+    var posX = x || Math.random() * w;
+    var posY = y || Math.random() * h;
+    var type = Math.floor(Math.random() * 7);
+    switch(type) {
+      case 0: 
+        var fill = "#9BB0FF" // blue
+        break;
+      case 1: 
+         var fill = "#AABFFF" // blue-white
+        break;
+      case 2: 
+        var fill = "#CAD7FF" // white
+        break;
+      case 3: 
+        var fill = "#F8F7FF" // white-yellow
+        break;
+      case 4: 
+        var fill = "#F8F7FF" // yellow
+        break;
+      case 5: 
+        var fill = "#FFD2A1" // orange
+        break;
+      case 6: 
+        var fill = "#FFCCDF" // red
+        break;
+    }    
+    var radius = Math.random() * 2.5;
+    var circle = canvas.circle(posX, posY, radius);
+    circle.attr("fill", fill);
+    circle.attr("opacity", Math.random());
+    if (animate === true) {
+      var finalX = Math.random() * w;
+      var finalY = type > 3 ? 0 : h;
+      var anim = Raphael.animation({cx: finalX, cy: finalY}, 500, "linear", function(){
         this.remove();  
       });
-      this.circle.animate(anim);   
+      circle.animate(anim);   
     }
-  }
-
-  for (var i = 0; i < 180; i++) {
-    new Star(false);
   }
 
   function createShootingStar() {
     var startPos = Math.random() * w;
-    new Star(true, startPos, 10);
+    new Star(true, w/2, h/2);
+  }
+
+  for (var i = 0; i < 300; i++) {
+    new Star(false);
   }
 
   setInterval(createShootingStar, 500);
