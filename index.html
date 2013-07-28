@@ -5,56 +5,48 @@
 <title>canvas</title>
 <style>
 * {margin: 0; padding: 0;}
-#canvas {
-  display: block;
+svg {
   background: black;
 }
 </style>
 </head>
 <body>
-<svg id="canvas">
-</svg>
 <script src="jquery.min.js"></script>
 <script src="raphael-min.js"></script>
 <script>
 
-  function svgEl(tagName) {
-    return document.createElementNS("http://www.w3.org/2000/svg", tagName);
-  }
-
-  var stars = [];
   var w = 1440;
-  var h = 800;
+  var h = 400;
 
-  var svg = $("#canvas");
-  svg.width(w).height(h).addClass("canvas");
+  var canvas = new Raphael(0,0,w, h);
 
-  function Star(shooting) {
-    this.shooting = shooting;
-    this.posX = Math.floor(Math.random()*w);
-    this.posY = Math.floor(Math.random()*h);
-    this.fill = "hsla(" + Math.floor(Math.random()*360) + ", 25%, 55%, 1)";
-    this.radius = Math.random()*2;
-    if (this.shooting === true) {
-      console.log("true");
+  function Star(animate, x, y) {
+    this.posX = x || Math.floor(Math.random() * w);
+    this.posY = y || Math.floor(Math.random() * h);
+    this.fill = "hsla(" + Math.floor(Math.random() * 360) + ", 10%, 75%, 1)";
+    this.radius = Math.random() * 2;
+    this.circle = canvas.circle(this.posX, this.posY, this.radius);
+    this.circle.attr("fill", this.fill);
+    this.animate = animate; 
+    if (this.animate === true) {
+      var finalX = Math.floor(Math.random() * w);
+      var anim = Raphael.animation({cx: finalX, cy: h}, 2e3, function(){
+        this.remove();  
+      });
+      this.circle.animate(anim);   
     }
   }
 
-  for (var i = 0; i < 80; i++) {
-    var shooting; 
-    shooting = (Math.floor(Math.random()*10)) == 1 ? true : false;
-    stars.push(new Star(shooting));
+  for (var i = 0; i < 180; i++) {
+    new Star(false);
   }
 
-  for (var i = 0; i < stars.length; i++) {
-    var circle = svgEl("circle")
-    svg.append(circle);
-    $(circle).attr("r", stars[i].radius)
-      .attr("cx", stars[i].posX)
-      .attr("cy", stars[i].posY)
-      .attr("fill", stars[i].fill);  
+  function createShootingStar() {
+    var startPos = Math.random() * w;
+    new Star(true, startPos, 10);
   }
 
+  setInterval(createShootingStar, 500);
 
 </script>
 </body>
