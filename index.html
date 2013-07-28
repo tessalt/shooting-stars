@@ -62,11 +62,13 @@ svg {
   }
 
   function createShootingStar() {
-    var startPos = Math.random() * w;
-    new Star(true, w/2, h/2);
+    if (Math.random() > 0.5) {
+      var startPos = Math.random() * w;
+      new Star(true, w/2, h/2);
+    }
   }
 
-  for (var i = 0; i < 300; i++) {
+  for (var i = 0; i < 450; i++) {
     new Star(false);
   }
 
