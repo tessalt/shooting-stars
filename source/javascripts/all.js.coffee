@@ -21,7 +21,7 @@ class Star
 		@circle.attr "fill", colours[fill]
 		@circle.attr "opacity", @opacity
 	
-	twinkle: (cb) ->		
+	twinkle: ->		
 		pulseOut = () => 
 			@circle.animate
 				r: @radius + 1,
