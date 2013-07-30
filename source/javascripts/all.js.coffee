@@ -40,7 +40,7 @@ class Star
 		anim = Raphael.animation(
 		  cx: finalX
 		  cy: finalY
-		, 500, "linear", ->
+		, 300, "linear", ->
 		  @remove()
 		)
 		@circle.animate(anim)
